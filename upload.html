@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>สภานักเรียนโรงเรียนบุญวัฒนา</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Sarabun', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .floating-animation {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        .gradient-text {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .file-upload-area {
+            border: 3px dashed #cbd5e0;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .file-upload-area::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(102, 126, 234, 0.1), transparent);
+            transition: left 0.5s;
+        }
+        
+        .file-upload-area:hover::before {
+            left: 100%;
+        }
+        
+        .file-upload-area:hover {
+            border-color: #667eea;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 20px 40px rgba(102, 126, 234, 0.1);
+        }
+        
+        .file-upload-area.dragover {
+            border-color: #667eea;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+            transform: scale(1.02);
+        }
+        
+        .form-input {
+            transition: all 0.3s ease;
+            border: 2px solid #e2e8f0;
+        }
+        
+        .form-input:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            transform: translateY(-1px);
+        }
+        
+        .submit-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .submit-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        .submit-btn:hover::before {
+            left: 100%;
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 20px 40px rgba(102, 126, 234, 0.3);
+        }
+        
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.1);
+        }
+        
+        .progress-bar {
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+        
+        .step-indicator {
+            position: relative;
+        }
+        
+        .pulse-animation {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Background Decorations -->
+    <div class="fixed inset-0 overflow-hidden pointer-events-none">
+        <div class="absolute -top-40 -right-40 w-80 h-80 bg-white opacity-10 rounded-full floating-animation"></div>
+        <div class="absolute -bottom-40 -left-40 w-96 h-96 bg-white opacity-5 rounded-full floating-animation" style="animation-delay: -3s;"></div>
+        <div class="absolute top-1/2 left-1/4 w-32 h-32 bg-white opacity-10 rounded-full floating-animation" style="animation-delay: -1s;"></div>
+    </div>
+
+    <!-- Navigation Menu -->
+    <nav class="relative z-20 bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg border-b border-white border-opacity-20">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center">
+                    <img src="https://data.bwnsc.in.th/sc.png" alt="BWNSC Logo" class="w-10 h-10 rounded-lg mr-3">
+                    <span class="text-white font-bold text-lg">สภานักเรียนโรงเรียนบุญวัฒนา</span>
+                </div>
+                
+                <div class="flex space-x-4">
+                    <button onclick="window.location.href='view.html'" class="flex items-center px-4 py-2 bg-yellow-400 hover:bg-yellow-500 text-gray-800 rounded-lg font-medium transition-all duration-300 hover:transform hover:scale-105">
+                        <i class="fas fa-share mr-2"></i>
+                        ดู Portfolio ของพี่
+                    </button>
+
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <div class="relative z-10 pt-12 pb-8">
+        <div class="container mx-auto px-4 text-center">
+            <div class="inline-flex items-center justify-center w-20 h-20 bg-white bg-opacity-20 rounded-full mb-6 floating-animation">
+                <i class="fas fa-briefcase text-3xl text-white"></i>
+            </div>
+            <h1 class="text-5xl font-bold text-white mb-4">
+                ส่ง <span class="text-yellow-300">Portfolio</span> ให้น้อง
+            </h1>
+            <p class="text-xl text-blue-100 max-w-2xl mx-auto leading-relaxed">
+                แชร์ผลงานและประสบการณ์เพื่อสร้างโอกาสใหม่ในอนาคต
+            </p>
+            
+            <!-- Progress Steps -->
+            <div class="flex justify-center items-center mt-8 space-x-8">
+                <div class="step-indicator active flex items-center">
+                    <div class="w-10 h-10 bg-white bg-opacity-20 rounded-full flex items-center justify-center text-white font-semibold">
+                        1
+                    </div>
+                    <span class="ml-3 text-white font-medium">ข้อมูลส่วนตัว</span>
+                </div>
+                <div class="step-indicator flex items-center">
+                    <div class="w-10 h-10 bg-white bg-opacity-20 rounded-full flex items-center justify-center text-white font-semibold">
+                        2
+                    </div>
+                    <span class="ml-3 text-white font-medium">อัปโหลดไฟล์</span>
+                </div>
+                <div class="step-indicator flex items-center">
+                    <div class="w-10 h-10 bg-white bg-opacity-20 rounded-full flex items-center justify-center text-white font-semibold">
+                        3
+                    </div>
+                    <span class="ml-3 text-white font-medium">เสร็จสิ้น</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="relative z-10 container mx-auto px-4 pb-12">
+        <div class="max-w-4xl mx-auto">
+            <!-- Info Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                <!-- Purpose Card -->
+                <div class="glass-effect rounded-2xl p-6 card-hover">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg flex items-center justify-center mr-3">
+                            <i class="fas fa-bullseye text-white"></i>
+                        </div>
+                        <h3 class="text-xl font-bold gradient-text">วัตถุประสงค์</h3>
+                    </div>
+                    <ul class="space-y-3 text-gray-600">
+                        <li class="flex items-center">
+                            <i class="fas fa-graduation-cap text-blue-500 mr-3"></i>
+                            เป็นแนวทางและแรงบันดาลใจให้รุ่นน้อง
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-lightbulb text-yellow-500 mr-3"></i>
+                            แชร์ประสบการณ์และเทคนิคการทำงาน
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-handshake text-green-500 mr-3"></i>
+                            สร้างเครือข่ายและการเชื่อมต่อระหว่างรุ่น
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-rocket text-purple-500 mr-3"></i>
+                            ช่วยให้น้องเตรียมตัวสู่การทำงานจริง
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Tips Card -->
+                <div class="glass-effect rounded-2xl p-6 card-hover">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 bg-gradient-to-r from-green-500 to-teal-600 rounded-lg flex items-center justify-center mr-3">
+                            <i class="fas fa-lightbulb text-white"></i>
+                        </div>
+                        <h3 class="text-xl font-bold gradient-text">เคล็ดลับการอัปโหลด</h3>
+                    </div>
+                    <ul class="space-y-3 text-gray-600">
+                        <li class="flex items-center">
+                            <i class="fas fa-info-circle text-blue-500 mr-3"></i>
+                            ไฟล์ PDF ควรมีขนาดไม่เกิน 50MB
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-info-circle text-blue-500 mr-3"></i>
+                            ตั้งชื่อไฟล์ให้ชัดเจนและเข้าใจง่าย
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-info-circle text-blue-500 mr-3"></i>
+                            ตรวจสอบข้อมูลให้ครบถ้วนก่อนส่ง
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-info-circle text-blue-500 mr-3"></i>
+                            กรอกช่องทางติดต่ออย่างน้อย 1 ช่องทาง
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Main Form Card -->
+            <div class="glass-effect rounded-3xl shadow-2xl p-8 md:p-12 card-hover">
+                <form id="portfolioForm" class="space-y-8">
+                    <!-- Personal Information Section -->
+                    <div class="bg-gradient-to-r from-blue-50 to-purple-50 rounded-2xl p-8 border border-blue-100">
+                        <div class="flex items-center mb-6">
+                            <div class="w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl flex items-center justify-center mr-4">
+                                <i class="fas fa-user text-white text-xl"></i>
+                            </div>
+                            <h2 class="text-2xl font-bold gradient-text">ข้อมูลส่วนตัว</h2>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <!-- คำนำหน้าชื่อ -->
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-3">
+                                    <i class="fas fa-id-badge text-blue-500 mr-2"></i>คำนำหน้าชื่อ *
+                                </label>
+                                <select id="prefix" name="prefix" required class="form-input w-full px-4 py-3 rounded-xl focus:outline-none">
+                                    <option value="">เลือกคำนำหน้าชื่อ</option>
+                                    <option value="นาย">นาย</option>
+                                    <option value="นางสาว">นางสาว</option>
+                                    <option value="นาง">นาง</option>
+                                </select>
+                            </div>
+
+                            <!-- ชื่อ -->
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-3">
+                                    <i class="fas fa-signature text-green-500 mr-2"></i>ชื่อ *
+                                </label>
+                                <input type="text" id="firstName" name="firstName" required 
+                                       class="form-input w-full px-4 py-3 rounded-xl focus:outline-none"
+                                       placeholder="กรอกชื่อของคุณ">
+                            </div>
+
+                            <!-- นามสกุล -->
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-3">
+                                    <i class="fas fa-signature text-green-500 mr-2"></i>นามสกุล *
+                                </label>
+                                <input type="text" id="lastName" name="lastName" required 
+                                       class="form-input w-full px-4 py-3 rounded-xl focus:outline-none"
+                                       placeholder="กรอกนามสกุลของคุณ">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Education Information Section -->
+                    <div class="bg-gradient-to-r from-green-50 to-teal-50 rounded-2xl p-8 border border-green-100">
+                        <div class="flex items-center mb-6">
+                            <div class="w-12 h-12 bg-gradient-to-r from-green-500 to-teal-600 rounded-xl flex items-center justify-center mr-4">
+                                <i class="fas fa-graduation-cap text-white text-xl"></i>
+                            </div>
+                            <h2 class="text-2xl font-bold gradient-text">ข้อมูลการศึกษา</h2>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <!-- รุ่น/ปีจบ -->
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-3">
+                                    <i class="fas fa-calendar-alt text-orange-500 mr-2"></i>รุ่น หรือปีที่จบการศึกษา *
+                                </label>
+                                <input type="text" id="graduationYear" name="graduationYear" required 
+                                       class="form-input w-full px-4 py-3 rounded-xl focus:outline-none"
+                                       placeholder="เช่น รุ่น 65 หรือ ปี 2565">
+                            </div>
+
+                            <!-- กลุ่มสาขาวิชา -->
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-3">
+                                    <i class="fas fa-book-open text-purple-500 mr-2"></i>กลุ่มสาขาวิชาที่เรียน *
+                                </label>
+                                <select id="academicGroup" name="academicGroup" required class="form-input w-full px-4 py-3 rounded-xl focus:outline-none">
+                                    <option value="">เลือกกลุ่มสาขาวิชา</option>
+                                    <option value="กลุ่มคณะแพทยศาสตร์">กลุ่มคณะแพทยศาสตร์</option>
+                                    <option value="กลุ่มคณะทันตแพทยศาสตร์">กลุ่มคณะทันตแพทยศาสตร์</option>
+                                    <option value="กลุ่มคณะเภสัชศาสตร์">กลุ่มคณะเภสัชศาสตร์</option>
+                                    <option value="กลุ่มคณะพยาบาลศาสตร์">กลุ่มคณะพยาบาลศาสตร์</option>
+                                    <option value="กลุ่มคณะสัตวแพทยศาสตร์">กลุ่มคณะสัตวแพทยศาสตร์</option>
+                                    <option value="กลุ่มคณะสหเวชศาสตร์/สาธารณสุข/เทคนิคการแพทย์/กายภาพบำบัด">กลุ่มคณะสหเวชศาสตร์/สาธารณสุข/เทคนิคการแพทย์/กายภาพบำบัด</option>
+                                    <option value="กลุ่มคณะวิทยาศาสตร์">กลุ่มคณะวิทยาศาสตร์</option>
+                                    <option value="กลุ่มคณะเทคโนโลยีการอาหาร/คหกรรมศาสตร์">กลุ่มคณะเทคโนโลยีการอาหาร/คหกรรมศาสตร์</option>
+                                    <option value="กลุ่มคณะเทคโนโลยีสารสนเทศ/วิทยาการคอมพิวเตอร์">กลุ่มคณะเทคโนโลยีสารสนเทศ/วิทยาการคอมพิวเตอร์</option>
+                                    <option value="กลุ่มคณะจิตวิทยา">กลุ่มคณะจิตวิทยา</option>
+                                    <option value="กลุ่มคณะวิศวกรรมศาสตร์">กลุ่มคณะวิศวกรรมศาสตร์</option>
+                                    <option value="กลุ่มคณะรัฐศาสตร์/สังคมสงเคราะห์">กลุ่มคณะรัฐศาสตร์/สังคมสงเคราะห์</option>
+                                    <option value="กลุ่มคณะนิติศาสตร์">กลุ่มคณะนิติศาสตร์</option>
+                                    <option value="กลุ่มคณะเกษตรศาสตร์/ประมง/วนศาสตร์/ปศุสัตว์/อุตสาหกรรมเกษตร">กลุ่มคณะเกษตรศาสตร์/ประมง/วนศาสตร์/ปศุสัตว์/อุตสาหกรรมเกษตร</option>
+                                    <option value="กลุ่มคณะพาณิชยศาสตร์/บริหารธุรกิจ/เศรษฐศาสตร์">กลุ่มคณะพาณิชยศาสตร์/บริหารธุรกิจ/เศรษฐศาสตร์</option>
+                                    <option value="กลุ่มคณะนิเทศศาสตร์/วารสารศาสตร์/เทคโนโลยีสื่อสารมวลชน">กลุ่มคณะนิเทศศาสตร์/วารสารศาสตร์/เทคโนโลยีสื่อสารมวลชน</option>
+                                    <option value="กลุ่มคณะครุศาสตร์/ศึกษาศาสตร์">กลุ่มคณะครุศาสตร์/ศึกษาศาสตร์</option>
+                                    <option value="กลุ่มคณะครุศาสตร์อุตสาหกรรม">กลุ่มคณะครุศาสตร์อุตสาหกรรม</option>
+                                    <option value="กลุ่มคณะอักษรศาสตร์/มนุษยศาสตร์/ศิลปศาสตร์/สังคมศาสตร์">กลุ่มคณะอักษรศาสตร์/มนุษยศาสตร์/ศิลปศาสตร์/สังคมศาสตร์</option>
+                                    <option value="กลุ่มคณะศิลปกรรมศาสตร์">กลุ่มคณะศิลปกรรมศาสตร์</option>
+                                    <option value="กลุ่มคณะสถาปัตยกรรมศาสตร์">กลุ่มคณะสถาปัตยกรรมศาสตร์</option>
+                                    <option value="กลุ่มคณะวิทยาศาสตร์การกีฬา">กลุ่มคณะวิทยาศาสตร์การกีฬา</option>
+                                    <option value="กลุ่มคณะโลจิสติกส์/เทคโนโลยีอุตสาหกรรม">กลุ่มคณะโลจิสติกส์/เทคโนโลยีอุตสาหกรรม</option>
+                                    <option value="กลุ่มคณะอุตสาหกรรมการท่องเที่ยว/การโรงแรม/การบิน">กลุ่มคณะอุตสาหกรรมการท่องเที่ยว/การโรงแรม/การบิน</option>
+                                    <option value="กลุ่มคณะสิ่งแวดล้อม">กลุ่มคณะสิ่งแวดล้อม</option>
+                                    <option value="กลุ่มคณะดุริยางคศิลป์และดนตรี">กลุ่มคณะดุริยางคศิลป์และดนตรี</option>
+                                </select>
+                            </div>
+
+                            <!-- มหาวิทยาลัย -->
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-3">
+                                    <i class="fas fa-university text-indigo-500 mr-2"></i>มหาวิทยาลัย *
+                                </label>
+                                <input type="text" id="university" name="university" required 
+                                       class="form-input w-full px-4 py-3 rounded-xl focus:outline-none"
+                                       placeholder="ชื่อมหาวิทยาลัย">
+                            </div>
+
+                            <!-- คณะ -->
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-3">
+                                    <i class="fas fa-building text-red-500 mr-2"></i>คณะ *
+                                </label>
+                                <input type="text" id="faculty" name="faculty" required 
+                                       class="form-input w-full px-4 py-3 rounded-xl focus:outline-none"
+                                       placeholder="ชื่อคณะ">
+                            </div>
+
+                            <!-- สาขา -->
+                            <div class="md:col-span-2">
+                                <label class="block text-sm font-semibold text-gray-700 mb-3">
+                                    <i class="fas fa-microscope text-teal-500 mr-2"></i>สาขา *
+                                </label>
+                                <input type="text" id="major" name="major" required 
+                                       class="form-input w-full px-4 py-3 rounded-xl focus:outline-none"
+                                       placeholder="ชื่อสาขาวิชา">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Contact Information Section -->
+                    <div class="bg-gradient-to-r from-pink-50 to-rose-50 rounded-2xl p-8 border border-pink-100">
+                        <div class="flex items-center mb-6">
+                            <div class="w-12 h-12 bg-gradient-to-r from-pink-500 to-rose-600 rounded-xl flex items-center justify-center mr-4">
+                                <i class="fas fa-address-book text-white text-xl"></i>
+                            </div>
+                            <h2 class="text-2xl font-bold gradient-text">ช่องทางการติดต่อ</h2>
+                            <span class="ml-4 text-sm text-gray-500 bg-gray-100 px-3 py-1 rounded-full">กรุณากรอกอย่างน้อย 1 ช่องทาง</span>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <!-- Facebook -->
+                            <div class="relative">
+                                <label class="block text-sm font-semibold text-gray-700 mb-3">
+                                    <i class="fab fa-facebook text-blue-600 mr-2"></i>Facebook
+                                </label>
+                                <div class="relative">
+                                    <input type="url" id="facebook" name="facebook" 
+                                           class="form-input w-full px-4 py-3 pl-12 rounded-xl focus:outline-none"
+                                           placeholder="https://facebook.com/yourprofile">
+                                    <i class="fab fa-facebook absolute left-4 top-1/2 transform -translate-y-1/2 text-blue-600"></i>
+                                </div>
+                            </div>
+
+                            <!-- Instagram -->
+                            <div class="relative">
+                                <label class="block text-sm font-semibold text-gray-700 mb-3">
+                                    <i class="fab fa-instagram text-pink-600 mr-2"></i>Instagram
+                                </label>
+                                <div class="relative">
+                                    <input type="url" id="instagram" name="instagram" 
+                                           class="form-input w-full px-4 py-3 pl-12 rounded-xl focus:outline-none"
+                                           placeholder="https://instagram.com/yourusername">
+                                    <i class="fab fa-instagram absolute left-4 top-1/2 transform -translate-y-1/2 text-pink-600"></i>
+                                </div>
+                            </div>
+
+                            <!-- Email -->
+                            <div class="relative">
+                                <label class="block text-sm font-semibold text-gray-700 mb-3">
+                                    <i class="fas fa-envelope text-gray-600 mr-2"></i>อีเมล
+                                </label>
+                                <div class="relative">
+                                    <input type="email" id="email" name="email" 
+                                           class="form-input w-full px-4 py-3 pl-12 rounded-xl focus:outline-none"
+                                           placeholder="your.email@example.com">
+                                    <i class="fas fa-envelope absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-600"></i>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div id="contactError" class="hidden mt-4 p-4 bg-red-50 border border-red-200 rounded-xl">
+                            <div class="flex items-center text-red-700">
+                                <i class="fas fa-exclamation-triangle mr-2"></i>
+                                <span class="font-medium">กรุณากรอกช่องทางการติดต่ออย่างน้อย 1 ช่องทาง</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- File Upload Section -->
+                    <div class="bg-gradient-to-r from-orange-50 to-amber-50 rounded-2xl p-8 border border-orange-100">
+                        <div class="flex items-center mb-6">
+                            <div class="w-12 h-12 bg-gradient-to-r from-orange-500 to-amber-600 rounded-xl flex items-center justify-center mr-4">
+                                <i class="fas fa-cloud-upload-alt text-white text-xl"></i>
+                            </div>
+                            <h2 class="text-2xl font-bold gradient-text">อัปโหลด Portfolio</h2>
+                        </div>
+                        
+                        <div id="fileUploadArea" class="file-upload-area rounded-2xl p-12 text-center cursor-pointer">
+                            <div id="uploadContent">
+                                <div class="w-24 h-24 mx-auto mb-6 bg-gradient-to-r from-orange-400 to-amber-500 rounded-full flex items-center justify-center floating-animation">
+                                    <i class="fas fa-file-pdf text-white text-3xl"></i>
+                                </div>
+                                <h3 class="text-2xl font-bold text-gray-700 mb-3">อัปโหลดไฟล์ PDF</h3>
+                                <p class="text-gray-600 mb-4 text-lg">คลิกเพื่อเลือกไฟล์ หรือลากไฟล์มาวางที่นี่</p>
+                                <div class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-orange-500 to-amber-600 text-white rounded-xl font-semibold">
+                                    <i class="fas fa-plus mr-2"></i>เลือกไฟล์ PDF
+                                </div>
+                                <p class="text-sm text-gray-500 mt-4">รองรับเฉพาะไฟล์ PDF (ขนาดไม่เกิน 50MB)</p>
+                            </div>
+                            
+                            <div id="fileInfo" class="hidden">
+                                <div class="w-24 h-24 mx-auto mb-6 bg-green-500 rounded-full flex items-center justify-center">
+                                    <i class="fas fa-check text-white text-3xl"></i>
+                                </div>
+                                <h3 class="text-xl font-bold text-green-700 mb-2">ไฟล์พร้อมอัปโหลด</h3>
+                                <p id="fileName" class="text-gray-700 font-medium mb-4"></p>
+                                <button type="button" id="removeFile" class="inline-flex items-center px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg font-medium transition-colors">
+                                    <i class="fas fa-trash mr-2"></i>ลบไฟล์
+                                </button>
+                            </div>
+                        </div>
+                        <input type="file" id="portfolioFile" name="portfolioFile" accept=".pdf" class="hidden" required>
+                    </div>
+
+                    <!-- Consent Section -->
+                    <div class="bg-gradient-to-r from-emerald-50 to-green-50 rounded-2xl p-8 border border-emerald-100">
+                        <div class="flex items-start space-x-4">
+                            <div class="flex-shrink-0 mt-1">
+                                <input type="checkbox" id="consent" name="consent" required 
+                                       class="w-5 h-5 text-emerald-600 focus:ring-emerald-500 border-gray-300 rounded">
+                            </div>
+                            <div>
+                                <label for="consent" class="text-gray-700">
+                                    <span class="font-bold text-lg text-emerald-700">
+                                        <i class="fas fa-shield-alt mr-2"></i>ยินยอมเปิดเผยข้อมูล *
+                                    </span>
+                                    <p class="mt-2 text-gray-600 leading-relaxed">
+                                        ข้าพเจ้ายินยอมให้เปิดเผยข้อมูลและพอร์ตฟอลิโอของข้าพเจ้าเพื่อใช้ในการประชาสัมพันธ์และกิจกรรมของสถาบัน 
+                                        รวมถึงการนำไปใช้เป็นตัวอย่างสำหรับรุ่นน้อง
+                                    </p>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="pt-8">
+                        <button type="submit" id="submitBtn" 
+                                class="submit-btn w-full py-4 px-8 rounded-2xl font-bold text-xl text-white focus:outline-none focus:ring-4 focus:ring-blue-300 disabled:opacity-50 disabled:cursor-not-allowed">
+                            <span id="submitText" class="flex items-center justify-center">
+                                <i class="fas fa-paper-plane mr-3"></i>
+                                ส่งข้อมูล Portfolio
+                            </span>
+                            <span id="loadingText" class="hidden flex items-center justify-center">
+                                <i class="fas fa-spinner fa-spin mr-3"></i>
+                                กำลังส่งข้อมูล...
+                            </span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div id="successModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+        <div class="glass-effect rounded-3xl p-8 max-w-md w-full mx-4 text-center">
+            <div class="w-20 h-20 bg-gradient-to-r from-green-400 to-emerald-500 rounded-full flex items-center justify-center mx-auto mb-6 floating-animation">
+                <i class="fas fa-check text-white text-3xl"></i>
+            </div>
+            <h3 class="text-2xl font-bold gradient-text mb-4">ส่งข้อมูลสำเร็จ!</h3>
+            <p class="text-gray-600 mb-8 leading-relaxed">
+                ข้อมูล Portfolio ของคุณได้ถูกบันทึกเรียบร้อยแล้ว<br>
+                ขอบคุณที่แชร์ผลงานกับเรา
+            </p>
+            <button id="closeModal" class="submit-btn px-8 py-3 rounded-xl font-semibold text-white">
+                <i class="fas fa-thumbs-up mr-2"></i>เยี่ยมเลย!
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // File upload functionality
+        const fileUploadArea = document.getElementById('fileUploadArea');
+        const fileInput = document.getElementById('portfolioFile');
+        const uploadContent = document.getElementById('uploadContent');
+        const fileInfo = document.getElementById('fileInfo');
+        const fileName = document.getElementById('fileName');
+        const removeFileBtn = document.getElementById('removeFile');
+
+        // Click to upload
+        fileUploadArea.addEventListener('click', () => {
+            fileInput.click();
+        });
+
+        // Drag and drop functionality
+        fileUploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            fileUploadArea.classList.add('dragover');
+        });
+
+        fileUploadArea.addEventListener('dragleave', () => {
+            fileUploadArea.classList.remove('dragover');
+        });
+
+        fileUploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            fileUploadArea.classList.remove('dragover');
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                handleFileSelect(files[0]);
+            }
+        });
+
+        // File input change
+        fileInput.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                handleFileSelect(e.target.files[0]);
+            }
+        });
+
+        // Handle file selection
+        function handleFileSelect(file) {
+            const maxSize = 50 * 1024 * 1024; // 50MB
+            const allowedTypes = ['application/pdf'];
+
+            if (file.size > maxSize) {
+                showAlert('ไฟล์มีขนาดใหญ่เกินไป', 'กรุณาเลือกไฟล์ PDF ที่มีขนาดไม่เกิน 50MB', 'error');
+                return;
+            }
+
+            if (!allowedTypes.includes(file.type)) {
+                showAlert('ประเภทไฟล์ไม่ถูกต้อง', 'กรุณาเลือกเฉพาะไฟล์ PDF เท่านั้น', 'error');
+                return;
+            }
+
+            fileName.textContent = file.name;
+            uploadContent.classList.add('hidden');
+            fileInfo.classList.remove('hidden');
+            
+            // Set the file to input
+            const dt = new DataTransfer();
+            dt.items.add(file);
+            fileInput.files = dt.files;
+        }
+
+        // Remove file
+        removeFileBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            fileInput.value = '';
+            uploadContent.classList.remove('hidden');
+            fileInfo.classList.add('hidden');
+        });
+
+        // Form submission
+        const form = document.getElementById('portfolioForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const submitText = document.getElementById('submitText');
+        const loadingText = document.getElementById('loadingText');
+        const successModal = document.getElementById('successModal');
+        const closeModal = document.getElementById('closeModal');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            // Validate contact information
+            const facebook = document.getElementById('facebook').value.trim();
+            const instagram = document.getElementById('instagram').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const contactError = document.getElementById('contactError');
+            
+            if (!facebook && !instagram && !email) {
+                contactError.classList.remove('hidden');
+                document.getElementById('facebook').focus();
+                return;
+            } else {
+                contactError.classList.add('hidden');
+            }
+            
+            // Show loading state
+            submitBtn.disabled = true;
+            submitText.classList.add('hidden');
+            loadingText.classList.remove('hidden');
+
+            try {
+                // สร้างข้อมูลสำหรับส่ง
+                const submitData = {
+                    prefix: document.getElementById('prefix').value,
+                    firstName: document.getElementById('firstName').value,
+                    lastName: document.getElementById('lastName').value,
+                    graduationYear: document.getElementById('graduationYear').value,
+                    academicGroup: document.getElementById('academicGroup').value,
+                    university: document.getElementById('university').value,
+                    faculty: document.getElementById('faculty').value,
+                    major: document.getElementById('major').value,
+                    facebook: facebook,
+                    instagram: instagram,
+                    email: email,
+                    consent: document.getElementById('consent').checked ? 'on' : 'off'
+                };
+                
+                // จัดการไฟล์ PDF
+                const file = fileInput.files[0];
+                if (file) {
+                    console.log('Processing file:', file.name, 'Size:', file.size);
+                    const base64File = await convertFileToBase64(file);
+                    submitData.fileData = base64File;
+                    submitData.fileName = file.name;
+                    submitData.fileType = file.type;
+                    console.log('File converted to base64, length:', base64File.length);
+                }
+                
+                // สร้าง FormData สำหรับส่งไปยัง Google Apps Script
+                const formData = new FormData();
+                for (const [key, value] of Object.entries(submitData)) {
+                    formData.append(key, value);
+                }
+                
+                // *** แทนที่ URL นี้ด้วย Web app URL ของคุณจาก Google Apps Script ***
+                const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzXKz0jcxl0rOA_BAoJm-3PvjVoqyXgImdWlWlkgkimCybRey1MBp6As2pjedmDdUJs/exec';
+                
+                console.log('Sending data to Google Apps Script...');
+                
+                // ส่งข้อมูลไปยัง Google Apps Script
+                const response = await fetch(GOOGLE_SCRIPT_URL, {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                console.log('Response received:', response.status);
+
+                // Show success modal
+                successModal.classList.remove('hidden');
+                
+                // Reset form
+                form.reset();
+                fileInput.value = '';
+                uploadContent.classList.remove('hidden');
+                fileInfo.classList.add('hidden');
+                contactError.classList.add('hidden');
+                
+            } catch (error) {
+                console.error('Error:', error);
+                showAlert('เกิดข้อผิดพลาด', 'ไม่สามารถส่งข้อมูลได้ กรุณาลองใหม่อีกครั้ง', 'error');
+            } finally {
+                // Reset button state
+                submitBtn.disabled = false;
+                submitText.classList.remove('hidden');
+                loadingText.classList.add('hidden');
+            }
+        });
+
+        // ฟังก์ชันแปลงไฟล์เป็น base64
+        function convertFileToBase64(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => {
+                    const base64 = reader.result.split(',')[1];
+                    resolve(base64);
+                };
+                reader.onerror = reject;
+                reader.readAsDataURL(file);
+            });
+        }
+
+        // Alert function
+        function showAlert(title, message, type = 'info') {
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `fixed top-4 right-4 z-50 p-4 rounded-xl shadow-lg max-w-sm ${
+                type === 'error' ? 'bg-red-50 border border-red-200 text-red-800' : 
+                type === 'success' ? 'bg-green-50 border border-green-200 text-green-800' :
+                'bg-blue-50 border border-blue-200 text-blue-800'
+            }`;
+            
+            alertDiv.innerHTML = `
+                <div class="flex items-start">
+                    <i class="fas ${
+                        type === 'error' ? 'fa-exclamation-triangle' :
+                        type === 'success' ? 'fa-check-circle' : 'fa-info-circle'
+                    } mr-3 mt-1"></i>
+                    <div>
+                        <h4 class="font-semibold">${title}</h4>
+                        <p class="text-sm mt-1">${message}</p>
+                    </div>
+                    <button onclick="this.parentElement.parentElement.remove()" class="ml-4 text-gray-400 hover:text-gray-600">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            `;
+            
+            document.body.appendChild(alertDiv);
+            
+            setTimeout(() => {
+                if (alertDiv.parentElement) {
+                    alertDiv.remove();
+                }
+            }, 5000);
+        }
+
+        // Close modal
+        closeModal.addEventListener('click', () => {
+            successModal.classList.add('hidden');
+        });
+
+        // Close modal when clicking outside
+        successModal.addEventListener('click', (e) => {
+            if (e.target === successModal) {
+                successModal.classList.add('hidden');
+            }
+        });
+
+        // Menu functions
+        function viewPortfolios() {
+            showAlert('ดู Portfolio', 'ฟีเจอร์นี้จะเปิดหน้าแสดง Portfolio ทั้งหมดที่ส่งมา', 'info');
+        }
+
+        function sendToJuniors() {
+            showAlert('ส่ง Portfolio ให้น้อง', 'ฟีเจอร์นี้จะเปิดหน้าส่ง Portfolio ให้รุ่นน้อง', 'info');
+        }
+
+        // Form validation animations
+        const inputs = document.querySelectorAll('.form-input');
+        inputs.forEach(input => {
+            input.addEventListener('blur', function() {
+                if (this.value.trim() !== '') {
+                    this.classList.add('border-green-300');
+                    this.classList.remove('border-red-300');
+                } else if (this.hasAttribute('required')) {
+                    this.classList.add('border-red-300');
+                    this.classList.remove('border-green-300');
+                }
+            });
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'966a8cda84fc7b64',t:'MTc1Mzc3MDQ0NC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
