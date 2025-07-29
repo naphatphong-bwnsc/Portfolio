@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>สภานักเรียนโรงเรียนบุญวัฒนา</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Sarabun', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .floating-animation {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        .gradient-text {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.1);
+        }
+        
+        .gradient-card { 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+        }
+    </style>
+</head>
+<body>
+    <div class="fixed inset-0 overflow-hidden pointer-events-none">
+        <div class="absolute -top-40 -right-40 w-80 h-80 bg-white opacity-10 rounded-full floating-animation"></div>
+        <div class="absolute -bottom-40 -left-40 w-96 h-96 bg-white opacity-5 rounded-full floating-animation" style="animation-delay: -3s;"></div>
+        <div class="absolute top-1/2 left-1/4 w-32 h-32 bg-white opacity-10 rounded-full floating-animation" style="animation-delay: -1s;"></div>
+    </div>
+    
+    <nav class="relative z-20 bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg border-b border-white border-opacity-20">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center">
+                    <img src="https://data.bwnsc.in.th/sc.png" alt="BWNSC Logo" class="w-10 h-10 rounded-lg mr-3">
+                    <span class="text-white font-bold text-lg">สภานักเรียนโรงเรียนบุญวัฒนา</span>
+                </div>
+                
+                <div class="flex space-x-4">
+                    <button onclick="window.location.href='upload.html'" class="flex items-center px-4 py-2 bg-yellow-400 hover:bg-yellow-500 text-gray-800 rounded-lg font-medium transition-all duration-300 hover:transform hover:scale-105">
+                        <i class="fas fa-upload mr-2"></i>
+                        ส่ง Portfolio ให้น้อง
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <!-- Header -->
+    <div class="relative z-10 pt-12 pb-8">
+        <div class="container mx-auto px-4 text-center">
+            <div class="inline-flex items-center justify-center w-20 h-20 bg-white bg-opacity-20 rounded-full mb-6 floating-animation">
+                <i class="fas fa-eye text-3xl text-white"></i>
+            </div>
+            <h1 class="text-5xl font-bold text-white mb-4">
+                ดู <span class="text-yellow-300">Portfolio</span> รุ่นพี่
+            </h1>
+            <p class="text-xl text-blue-100 max-w-2xl mx-auto leading-relaxed">
+                ค้นหาและดูผลงานของรุ่นพี่ที่น่าสนใจ พร้อมข้อมูลการติดต่อ
+            </p>
+        </div>
+    </div>
+
+    <!-- Search and Filter Section -->
+    <div class="container mx-auto px-4 mb-8 relative z-10">
+        <div class="glass-effect rounded-2xl shadow-2xl p-8 card-hover">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-3">
+                        <i class="fas fa-university text-blue-600 mr-2"></i>
+                        ค้นหามหาวิทยาลัย
+                    </label>
+                    <input type="text" id="searchUniversity" placeholder="ค้นหาชื่อมหาวิทยาลัย" 
+                           class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300 bg-white shadow-inner">
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-3">
+                        <i class="fas fa-graduation-cap text-purple-600 mr-2"></i>
+                        กลุ่มสาขาวิชา
+                    </label>
+                    <select id="filterMajor" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-300 bg-white shadow-inner">
+                        <option value="">ทุกสาขา</option>
+                        <!-- Options will be populated from Google Sheets -->
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-3">
+                        <i class="fas fa-calendar text-green-600 mr-2"></i>
+                        รุ่น/ปีจบ
+                    </label>
+                    <select id="filterYear" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-300 bg-white shadow-inner">
+                        <option value="">ทุกรุ่น</option>
+                        <!-- Options will be populated from Google Sheets -->
+                    </select>
+                </div>
+            </div>
+            <button onclick="clearFilters()" class="bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 text-white px-6 py-3 rounded-xl transition-all duration-300 font-semibold shadow-lg hover:shadow-xl transform hover:scale-105">
+                <i class="fas fa-refresh mr-2"></i>
+                ล้างตัวกรอง
+            </button>
+        </div>
+    </div>
+
+    <!-- Portfolio Grid -->
+    <div class="container mx-auto px-4 relative z-10">
+        <div id="portfolioGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Portfolio cards will be generated here -->
+        </div>
+        
+        <!-- No results message -->
+        <div id="noResults" class="text-center py-12 hidden">
+            <div class="glass-effect rounded-2xl p-8 max-w-md mx-auto">
+                <div class="text-6xl mb-4">😔</div>
+                <h3 class="text-xl font-semibold text-gray-700 mb-2">ไม่พบข้อมูลที่ค้นหา</h3>
+                <p class="text-gray-600">ลองเปลี่ยนคำค้นหาหรือตัวกรองใหม่</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Portfolio Modal -->
+    <div id="portfolioModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center p-4">
+        <div class="glass-effect rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl">
+            <div class="p-8">
+                <div class="flex justify-between items-start mb-6">
+                    <h2 id="modalTitle" class="text-3xl font-bold gradient-text"></h2>
+                    <button onclick="closeModal()" class="text-gray-500 hover:text-gray-700 text-3xl transition-colors">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div id="modalContent"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Google Sheets configuration
+        const SHEET_ID = '1XAhyR7mUJVfT2DaodtJEpXXewr92fExp5XRGDSZtTIY';
+        const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=Sheet1`;
+        
+        let portfolioData = [];
+        let filteredData = [];
+        let uniqueMajorGroups = new Set();
+        let uniqueYears = new Set();
+
+        // Function to parse CSV data from Google Sheets
+        function parseCSV(csvText) {
+            const lines = csvText.split('\n');
+            const headers = lines[0].split(',').map(header => header.replace(/"/g, '').trim());
+            
+            const data = [];
+            for (let i = 1; i < lines.length; i++) {
+                if (lines[i].trim() === '') continue;
+                
+                const values = [];
+                let currentValue = '';
+                let insideQuotes = false;
+                
+                for (let j = 0; j < lines[i].length; j++) {
+                    const char = lines[i][j];
+                    if (char === '"') {
+                        insideQuotes = !insideQuotes;
+                    } else if (char === ',' && !insideQuotes) {
+                        values.push(currentValue.trim());
+                        currentValue = '';
+                    } else {
+                        currentValue += char;
+                    }
+                }
+                values.push(currentValue.trim());
+                
+                if (values.length >= headers.length) {
+                    const row = {};
+                    headers.forEach((header, index) => {
+                        row[header] = values[index] || '';
+                    });
+                    
+                    // Only include rows where consent is given
+                    if (row['ยินยอมเปิดเผย'] && row['ยินยอมเปิดเผย'].includes('ยินยอม')) {
+                        // Collect unique values for filters
+                        if (row['กลุ่มสาขาวิชา']) uniqueMajorGroups.add(row['กลุ่มสาขาวิชา']);
+                        if (row['รุ่น/ปีจบ']) uniqueYears.add(row['รุ่น/ปีจบ']);
+                        
+                        data.push({
+                            date: row['วันที่ส่ง'] || '',
+                            title: row['คำนำหน้าชื่อ'] || '',
+                            firstName: row['ชื่อ'] || '',
+                            lastName: row['นามสกุล'] || '',
+                            year: row['รุ่น/ปีจบ'] || '',
+                            majorGroup: row['กลุ่มสาขาวิชา'] || '',
+                            university: row['มหาวิทยาลัย'] || '',
+                            faculty: row['คณะ'] || '',
+                            major: row['สาขา'] || '',
+                            facebook: row['Facebook'] || '',
+                            instagram: row['Instagram'] || '',
+                            email: row['อีเมล'] || '',
+                            portfolioLink: row['ลิงก์ไฟล์'] || '',
+                            consent: row['ยินยอมเปิดเผย'] || ''
+                        });
+                    }
+                }
+            }
+            return data;
+        }
+
+        // Function to update filter options
+        function updateFilterOptions() {
+            const majorSelect = document.getElementById('filterMajor');
+            const yearSelect = document.getElementById('filterYear');
+            
+            // Clear existing options (except "ทุกสาขา" and "ทุกรุ่น")
+            majorSelect.innerHTML = '<option value="">ทุกสาขา</option>';
+            yearSelect.innerHTML = '<option value="">ทุกรุ่น</option>';
+            
+            // Add major groups
+            Array.from(uniqueMajorGroups).sort().forEach(major => {
+                if (major) {
+                    const option = document.createElement('option');
+                    option.value = major;
+                    option.textContent = major;
+                    majorSelect.appendChild(option);
+                }
+            });
+            
+            // Add years
+            Array.from(uniqueYears).sort().reverse().forEach(year => {
+                if (year) {
+                    const option = document.createElement('option');
+                    option.value = year;
+                    option.textContent = `รุ่น ${year}`;
+                    yearSelect.appendChild(option);
+                }
+            });
+        }
+
+        // Function to load data from Google Sheets
+        async function loadPortfolioData() {
+            try {
+                showLoadingState();
+                const response = await fetch(SHEET_URL);
+                const csvText = await response.text();
+                portfolioData = parseCSV(csvText);
+                filteredData = [...portfolioData];
+                
+                updateFilterOptions();
+                renderPortfolios();
+                hideLoadingState();
+                
+                if (portfolioData.length === 0) {
+                    showMessage('ไม่พบข้อมูลในชีท หรือยังไม่มีผู้ยินยอมเปิดเผยข้อมูล', 'warning');
+                }
+            } catch (error) {
+                console.error('Error loading data:', error);
+                hideLoadingState();
+                showMessage('ไม่สามารถโหลดข้อมูลจากชีทได้ กรุณาตรวจสอบการเชื่อมต่ออินเทอร์เน็ต', 'error');
+                
+                // Use sample data as fallback
+                portfolioData = getSampleData();
+                filteredData = [...portfolioData];
+                renderPortfolios();
+            }
+        }
+
+        // Sample data as fallback
+        function getSampleData() {
+            return [
+                {
+                    date: "2024-01-15",
+                    title: "นาย",
+                    firstName: "สมชาย",
+                    lastName: "ใจดี",
+                    year: "2024",
+                    majorGroup: "วิศวกรรมศาสตร์",
+                    university: "จุฬาลงกรณ์มหาวิทยาลัย",
+                    faculty: "คณะวิศวกรรมศาสตร์",
+                    major: "วิศวกรรมคอมพิวเตอร์",
+                    facebook: "https://facebook.com/somchai",
+                    instagram: "https://instagram.com/somchai_dev",
+                    email: "somchai@email.com",
+                    portfolioLink: "https://drive.google.com/file/d/1234567890/view",
+                    consent: "ยินยอม"
+                }
+            ];
+        }
+
+        // Loading state functions
+        function showLoadingState() {
+            const grid = document.getElementById('portfolioGrid');
+            grid.innerHTML = `
+                <div class="col-span-full text-center py-12">
+                    <div class="animate-spin w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full mx-auto mb-4"></div>
+                    <p class="text-gray-600">กำลังโหลดข้อมูลจากชีท...</p>
+                </div>
+            `;
+        }
+
+        function hideLoadingState() {
+            // Loading state will be replaced by renderPortfolios()
+        }
+
+        function showMessage(message, type = 'info') {
+            const colors = {
+                info: 'bg-blue-100 text-blue-800 border-blue-200',
+                warning: 'bg-yellow-100 text-yellow-800 border-yellow-200',
+                error: 'bg-red-100 text-red-800 border-red-200'
+            };
+            
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `fixed top-4 right-4 p-4 rounded-lg border ${colors[type]} z-50 max-w-md`;
+            messageDiv.innerHTML = `
+                <div class="flex items-center space-x-2">
+                    <span>${type === 'error' ? '❌' : type === 'warning' ? '⚠️' : 'ℹ️'}</span>
+                    <span>${message}</span>
+                </div>
+            `;
+            
+            document.body.appendChild(messageDiv);
+            
+            setTimeout(() => {
+                messageDiv.remove();
+            }, 5000);
+        }
+
+        function renderPortfolios() {
+            const grid = document.getElementById('portfolioGrid');
+            const noResults = document.getElementById('noResults');
+            
+            if (filteredData.length === 0) {
+                grid.innerHTML = '';
+                noResults.classList.remove('hidden');
+                return;
+            }
+            
+            noResults.classList.add('hidden');
+            
+            grid.innerHTML = filteredData.map(portfolio => `
+                <div class="glass-effect rounded-2xl shadow-2xl overflow-hidden card-hover transition-all duration-500 cursor-pointer hover:shadow-3xl" 
+                     onclick="openModal('${portfolio.firstName}', '${portfolio.lastName}', '${portfolio.majorGroup}', '${portfolio.university}', '${portfolio.faculty}', '${portfolio.major}', '${portfolio.year}', '${portfolio.facebook}', '${portfolio.instagram}', '${portfolio.email}', '${portfolio.portfolioLink}')">
+                    <div class="gradient-card p-6 relative overflow-hidden">
+                        <div class="absolute top-0 right-0 w-20 h-20 bg-white bg-opacity-10 rounded-full -mr-10 -mt-10"></div>
+                        <div class="flex items-center space-x-4 relative z-10">
+                            <div class="w-16 h-16 bg-white bg-opacity-30 rounded-2xl flex items-center justify-center text-3xl backdrop-blur-sm shadow-lg">
+                                <i class="fas fa-user-graduate text-white"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-white font-bold text-xl drop-shadow-md">${portfolio.title}${portfolio.firstName} ${portfolio.lastName}</h3>
+                                <p class="text-white text-opacity-80 text-sm font-medium">รุ่น ${portfolio.year}</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="p-6">
+                        <div class="space-y-3 mb-6">
+                            <div class="flex items-center space-x-3 p-3 bg-blue-50 rounded-lg">
+                                <i class="fas fa-graduation-cap text-blue-600"></i>
+                                <span class="text-sm font-medium text-gray-700">${portfolio.majorGroup}</span>
+                            </div>
+                            <div class="flex items-center space-x-3 p-3 bg-green-50 rounded-lg">
+                                <i class="fas fa-university text-green-600"></i>
+                                <span class="text-sm font-medium text-gray-700">${portfolio.university}</span>
+                            </div>
+                            <div class="flex items-center space-x-3 p-3 bg-purple-50 rounded-lg">
+                                <i class="fas fa-book text-purple-600"></i>
+                                <span class="text-sm font-medium text-gray-700">${portfolio.major}</span>
+                            </div>
+                        </div>
+                        
+                        <div class="flex space-x-3 mb-6 justify-center">
+                            ${portfolio.facebook ? '<div class="w-10 h-10 bg-gradient-to-r from-blue-500 to-blue-600 rounded-xl flex items-center justify-center text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110"><i class="fab fa-facebook-f"></i></div>' : ''}
+                            ${portfolio.instagram ? '<div class="w-10 h-10 bg-gradient-to-r from-pink-500 to-purple-600 rounded-xl flex items-center justify-center text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110"><i class="fab fa-instagram"></i></div>' : ''}
+                            ${portfolio.email ? '<div class="w-10 h-10 bg-gradient-to-r from-gray-500 to-gray-600 rounded-xl flex items-center justify-center text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110"><i class="fas fa-envelope"></i></div>' : ''}
+                        </div>
+                        
+                        <button class="w-full bg-gradient-to-r from-yellow-400 to-orange-500 text-gray-800 py-4 px-6 rounded-xl hover:from-yellow-500 hover:to-orange-600 transition-all duration-300 font-bold text-lg shadow-lg hover:shadow-xl transform hover:scale-105">
+                            <i class="fas fa-folder-open mr-2"></i>
+                            ดูพอร์ตฟอลิโอ
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function openModal(firstName, lastName, majorGroup, university, faculty, major, year, facebook, instagram, email, portfolioLink) {
+            const modal = document.getElementById('portfolioModal');
+            const title = document.getElementById('modalTitle');
+            const content = document.getElementById('modalContent');
+            
+            title.textContent = `${firstName} ${lastName}`;
+            
+            content.innerHTML = `
+                <div class="space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="space-y-4">
+                            <div class="flex items-center space-x-3 p-3 bg-blue-50 rounded-lg">
+                                <i class="fas fa-calendar text-blue-600 text-lg"></i>
+                                <div>
+                                    <p class="text-sm text-gray-500 font-medium">รุ่น/ปีจบ</p>
+                                    <p class="font-semibold text-gray-800">${year}</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center space-x-3 p-3 bg-green-50 rounded-lg">
+                                <i class="fas fa-graduation-cap text-green-600 text-lg"></i>
+                                <div>
+                                    <p class="text-sm text-gray-500 font-medium">กลุ่มสาขาวิชา</p>
+                                    <p class="font-semibold text-gray-800">${majorGroup}</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center space-x-3 p-3 bg-purple-50 rounded-lg">
+                                <i class="fas fa-university text-purple-600 text-lg"></i>
+                                <div>
+                                    <p class="text-sm text-gray-500 font-medium">มหาวิทยาลัย</p>
+                                    <p class="font-semibold text-gray-800">${university}</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="space-y-4">
+                            <div class="flex items-center space-x-3 p-3 bg-orange-50 rounded-lg">
+                                <i class="fas fa-building text-orange-600 text-lg"></i>
+                                <div>
+                                    <p class="text-sm text-gray-500 font-medium">คณะ</p>
+                                    <p class="font-semibold text-gray-800">${faculty}</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center space-x-3 p-3 bg-red-50 rounded-lg">
+                                <i class="fas fa-book text-red-600 text-lg"></i>
+                                <div>
+                                    <p class="text-sm text-gray-500 font-medium">สาขา</p>
+                                    <p class="font-semibold text-gray-800">${major}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <hr class="border-gray-200">
+                    
+                    <div class="space-y-4">
+                        <h4 class="font-bold text-gray-800 text-lg flex items-center">
+                            <i class="fas fa-phone mr-2 text-blue-600"></i>
+                            ช่องทางติดต่อ
+                        </h4>
+                        <div class="grid grid-cols-1 gap-3">
+                            ${facebook ? `<a href="${facebook}" target="_blank" class="flex items-center space-x-4 p-4 bg-blue-50 rounded-xl hover:bg-blue-100 transition-all duration-300 hover:scale-105">
+                                <div class="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center text-white">
+                                    <i class="fab fa-facebook-f"></i>
+                                </div>
+                                <span class="text-blue-700 font-medium">Facebook</span>
+                            </a>` : ''}
+                            ${instagram ? `<a href="${instagram}" target="_blank" class="flex items-center space-x-4 p-4 bg-pink-50 rounded-xl hover:bg-pink-100 transition-all duration-300 hover:scale-105">
+                                <div class="w-10 h-10 bg-pink-500 rounded-full flex items-center justify-center text-white">
+                                    <i class="fab fa-instagram"></i>
+                                </div>
+                                <span class="text-pink-700 font-medium">Instagram</span>
+                            </a>` : ''}
+                            ${email ? `<a href="mailto:${email}" class="flex items-center space-x-4 p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-all duration-300 hover:scale-105">
+                                <div class="w-10 h-10 bg-gray-600 rounded-full flex items-center justify-center text-white">
+                                    <i class="fas fa-envelope"></i>
+                                </div>
+                                <span class="text-gray-700 font-medium">${email}</span>
+                            </a>` : ''}
+                        </div>
+                    </div>
+                    
+                    <hr class="border-gray-200">
+                    
+                    <div class="text-center">
+                        <a href="${portfolioLink}" target="_blank" 
+                           class="inline-flex items-center space-x-3 bg-gradient-to-r from-yellow-400 to-orange-500 text-gray-800 py-4 px-8 rounded-xl hover:from-yellow-500 hover:to-orange-600 transition-all duration-300 font-bold text-lg shadow-lg hover:shadow-xl transform hover:scale-105">
+                            <i class="fas fa-folder-open"></i>
+                            <span>เปิดดูพอร์ตฟอลิโอ</span>
+                        </a>
+                        <p class="text-sm text-gray-600 mt-3 font-medium">คลิกเพื่อเปิดไฟล์ใน Google Drive</p>
+                    </div>
+                </div>
+            `;
+            
+            modal.classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('portfolioModal').classList.add('hidden');
+        }
+
+        function filterPortfolios() {
+            const searchUniversity = document.getElementById('searchUniversity').value.toLowerCase();
+            const filterMajor = document.getElementById('filterMajor').value;
+            const filterYear = document.getElementById('filterYear').value;
+            
+            filteredData = portfolioData.filter(portfolio => {
+                const universityMatch = !searchUniversity || 
+                    portfolio.university.toLowerCase().includes(searchUniversity);
+                const majorMatch = !filterMajor || portfolio.majorGroup === filterMajor;
+                const yearMatch = !filterYear || portfolio.year === filterYear;
+                
+                return universityMatch && majorMatch && yearMatch && portfolio.consent === 'ยินยอม';
+            });
+            
+            renderPortfolios();
+        }
+
+        function clearFilters() {
+            document.getElementById('searchUniversity').value = '';
+            document.getElementById('filterMajor').value = '';
+            document.getElementById('filterYear').value = '';
+            filteredData = [...portfolioData];
+            renderPortfolios();
+        }
+
+        // Event listeners
+        document.getElementById('searchUniversity').addEventListener('input', filterPortfolios);
+        document.getElementById('filterMajor').addEventListener('change', filterPortfolios);
+        document.getElementById('filterYear').addEventListener('change', filterPortfolios);
+
+        // Close modal when clicking outside
+        document.getElementById('portfolioModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+
+        // Initial load
+        loadPortfolioData();
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'966b18c78067d038',t:'MTc1Mzc3NjE3NS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
