@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>สภานักเรียนโรงเรียนบุญวัฒนา</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Sarabun', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .floating-animation {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        .gradient-text {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.1);
+        }
+        
+        .gradient-card { 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+        }
+        
+        .feature-card {
+            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+    </style>
+</head>
+<body>
+    <div class="fixed inset-0 overflow-hidden pointer-events-none">
+        <div class="absolute -top-40 -right-40 w-80 h-80 bg-white opacity-10 rounded-full floating-animation"></div>
+        <div class="absolute -bottom-40 -left-40 w-96 h-96 bg-white opacity-5 rounded-full floating-animation" style="animation-delay: -3s;"></div>
+        <div class="absolute top-1/2 left-1/4 w-32 h-32 bg-white opacity-10 rounded-full floating-animation" style="animation-delay: -1s;"></div>
+        <div class="absolute top-1/4 right-1/3 w-24 h-24 bg-white opacity-5 rounded-full floating-animation" style="animation-delay: -2s;"></div>
+    </div>
+    
+    <!-- Navigation -->
+    <nav class="relative z-20 bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg border-b border-white border-opacity-20">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center">
+                    <img src="https://data.bwnsc.in.th/sc.png" alt="BWNSC Logo" class="w-10 h-10 rounded-lg mr-3">
+                    <span class="text-white font-bold text-lg">สภานักเรียนโรงเรียนบุญวัฒนา</span>
+                </div>
+                
+                <div class="flex space-x-4">
+                    <button class="flex items-center px-4 py-2 bg-yellow-400 hover:bg-yellow-500 text-gray-800 rounded-lg font-medium transition-all duration-300 hover:transform hover:scale-105">
+                        <i class="fas fa-upload mr-2"></i>
+                        ส่ง Portfolio
+                    </button>
+                    <button onclick="window.location.href='#'" class="flex items-center px-4 py-2 bg-white bg-opacity-20 hover:bg-opacity-30 text-white rounded-lg font-medium transition-all duration-300 hover:transform hover:scale-105">
+                        <i class="fas fa-eye mr-2"></i>
+                        ดู Portfolio
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="relative z-10 pt-16 pb-12">
+        <div class="container mx-auto px-4 text-center">
+            <div class="inline-flex items-center justify-center w-24 h-24 bg-white bg-opacity-20 rounded-full mb-8 floating-animation">
+                <i class="fas fa-upload text-4xl text-white"></i>
+            </div>
+            <h1 class="text-6xl font-bold text-white mb-6">
+                ส่ง <span class="text-yellow-300">Portfolio</span> ให้น้อง
+            </h1>
+            <p class="text-xl text-blue-100 max-w-3xl mx-auto leading-relaxed mb-8">
+                แชร์ผลงานและประสบการณ์ของคุณให้น้องได้เรียนรู้
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                <button onclick="scrollToForm()" class="bg-gradient-to-r from-yellow-400 to-orange-500 text-gray-800 px-8 py-4 rounded-xl hover:from-yellow-500 hover:to-orange-600 transition-all duration-300 font-bold text-lg shadow-lg hover:shadow-xl transform hover:scale-105">
+                    <i class="fas fa-rocket mr-2"></i>
+                    เริ่มส่งเลย!
+                </button>
+                <button onclick="scrollToInfo()" class="bg-white bg-opacity-20 hover:bg-opacity-30 text-white px-8 py-4 rounded-xl transition-all duration-300 font-semibold text-lg backdrop-blur-sm border border-white border-opacity-30">
+                    <i class="fas fa-info-circle mr-2"></i>
+                    เรียนรู้เพิ่มเติม
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Features Section -->
+    <div id="info" class="relative z-10 py-16">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-bold text-white mb-4">ทำไมต้องส่ง Portfolio?</h2>
+                <p class="text-xl text-blue-100 max-w-2xl mx-auto">ช่วยเหลือน้อง และสร้างเครือข่ายที่แข็งแกร่ง</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+                <div class="feature-card rounded-2xl p-8 text-center card-hover">
+                    <div class="w-16 h-16 bg-yellow-400 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                        <i class="fas fa-hands-helping text-2xl text-gray-800"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-4">ช่วยเหลือน้องๆ</h3>
+                    <p class="text-blue-100 leading-relaxed">แชร์ประสบการณ์และคำแนะนำให้น้องได้เตรียมตัวสำหรับการเรียนต่อ</p>
+                </div>
+                
+                <div class="feature-card rounded-2xl p-8 text-center card-hover">
+                    <div class="w-16 h-16 bg-green-400 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                        <i class="fas fa-network-wired text-2xl text-gray-800"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-4">สร้างเครือข่าย</h3>
+                    <p class="text-blue-100 leading-relaxed">เชื่อมต่อกับรุ่นน้องและรุ่นพี่คนอื่นๆ</p>
+                </div>
+                
+                <div class="feature-card rounded-2xl p-8 text-center card-hover">
+                    <div class="w-16 h-16 bg-purple-400 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                        <i class="fas fa-star text-2xl text-gray-800"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-4">แสดงผลงาน</h3>
+                    <p class="text-blue-100 leading-relaxed">โชว์ความสำเร็จและผลงานของคุณ เป็นแรงบันดาลใจให้กับรุ่นน้อง</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Call to Action Section -->
+    <div id="form" class="relative z-10 py-16">
+        <div class="container mx-auto px-4">
+            <div class="max-w-4xl mx-auto">
+                <div class="glass-effect rounded-3xl shadow-2xl p-8 md:p-12 text-center">
+                    <div class="mb-8">
+                        <div class="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full mb-6">
+                            <i class="fas fa-rocket text-3xl text-gray-800"></i>
+                        </div>
+                        <h2 class="text-4xl font-bold gradient-text mb-4">พร้อมแชร์ประสบการณ์แล้วใช่ไหม?</h2>
+                        <p class="text-gray-600 text-lg max-w-2xl mx-auto leading-relaxed">
+                            ช่วยให้น้อง ๆ ได้เรียนรู้จากประสบการณ์ของคุณ และสร้างเครือข่ายที่แข็งแกร่งในชุมชนบุญวัฒนา
+                        </p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                        <div class="bg-blue-50 rounded-2xl p-6">
+                            <div class="w-12 h-12 bg-blue-500 rounded-xl flex items-center justify-center mx-auto mb-4">
+                                <i class="fas fa-upload text-white text-xl"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-800 mb-3">ส่งพอร์ตฟอลิโอ</h3>
+                            <p class="text-gray-600 mb-4">กรอกข้อมูลและอัปโหลดผลงานของคุณเพื่อแชร์ให้น้อง ๆ ได้เรียนรู้</p>
+                            <button class="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-6 py-3 rounded-xl hover:from-blue-600 hover:to-blue-700 transition-all duration-300 font-semibold shadow-lg hover:shadow-xl transform hover:scale-105">
+                                <i class="fas fa-plus mr-2"></i>
+                                เริ่มส่งเลย
+                            </button>
+                        </div>
+
+                        <div class="bg-green-50 rounded-2xl p-6">
+                            <div class="w-12 h-12 bg-green-500 rounded-xl flex items-center justify-center mx-auto mb-4">
+                                <i class="fas fa-eye text-white text-xl"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-800 mb-3">ดูพอร์ตฟอลิโอ</h3>
+                            <p class="text-gray-600 mb-4">เรียนรู้จากประสบการณ์และผลงานของรุ่นพี่ที่ผ่านมา</p>
+                            <button onclick="window.location.href='#'" class="bg-gradient-to-r from-green-500 to-green-600 text-white px-6 py-3 rounded-xl hover:from-green-600 hover:to-green-700 transition-all duration-300 font-semibold shadow-lg hover:shadow-xl transform hover:scale-105">
+                                <i class="fas fa-search mr-2"></i>
+                                เริ่มดูเลย
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="bg-gradient-to-r from-purple-100 to-pink-100 rounded-2xl p-6">
+                        <h3 class="text-xl font-bold text-gray-800 mb-3">💡 เคล็ดลับการสร้างพอร์ตฟอลิโอที่ดี</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm text-gray-700">
+                            <div class="flex items-center space-x-2">
+                                <i class="fas fa-check-circle text-green-500"></i>
+                                <span>แสดงผลงานที่หลากหลาย</span>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <i class="fas fa-check-circle text-green-500"></i>
+                                <span>เล่าเรื่องราวเบื้องหลัง</span>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <i class="fas fa-check-circle text-green-500"></i>
+                                <span>ใส่ข้อมูลติดต่อที่ชัดเจน</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="relative z-10 py-12 border-t border-white border-opacity-20">
+        <div class="container mx-auto px-4 text-center">
+            <div class="flex items-center justify-center mb-4">
+                <img src="https://data.bwnsc.in.th/sc.png" alt="BWNSC Logo" class="w-12 h-12 rounded-lg mr-3">
+                <span class="text-white font-bold text-xl">สภานักเรียนโรงเรียนบุญวัฒนา</span>
+            </div>
+            <p class="text-blue-100 mb-4">ส่ง Portfolio ให้น้อง</p>
+            <div class="flex justify-center space-x-6">
+                <a href="#" class="text-blue-200 hover:text-white transition-colors">
+                    <i class="fab fa-facebook-f text-xl"></i>
+                </a>
+                <a href="#" class="text-blue-200 hover:text-white transition-colors">
+                    <i class="fab fa-instagram text-xl"></i>
+                </a>
+                <a href="#" class="text-blue-200 hover:text-white transition-colors">
+                    <i class="fas fa-envelope text-xl"></i>
+                </a>
+            </div>
+            <p class="text-blue-200 text-sm mt-6">© 2025 สภานักเรียนโรงเรียนบุญวัฒนา - สงวนลิขสิทธิ์</p>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scrolling functions
+        function scrollToForm() {
+            document.getElementById('form').scrollIntoView({ 
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+
+        function scrollToInfo() {
+            document.getElementById('info').scrollIntoView({ 
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'966b3b4600207b6e',t:'MTc1Mzc3NzU4OC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
